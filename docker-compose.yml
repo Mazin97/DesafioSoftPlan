@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  compoundcalcapi:
+    image: ${DOCKER_REGISTRY-}compoundcalcapi
+    build:
+      context: .
+      dockerfile: CompoundCalcApi/Dockerfile
+
+  feeapi:
+    image: ${DOCKER_REGISTRY-}feeapi
+    build:
+      context: .
+      dockerfile: FeeApi/Dockerfile
+
