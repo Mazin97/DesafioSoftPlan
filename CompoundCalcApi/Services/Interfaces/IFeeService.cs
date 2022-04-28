@@ -1,7 +1,11 @@
-﻿namespace CompoundCalcApi.Services.Interfaces
+﻿using CompoundCalcApi.Domain.Entities;
+
+namespace CompoundCalcApi.Services.Interfaces
 {
     public interface IFeeService
     {
-        Task<string> CalcCompoundInterestAsync(double initialValue, int monthsQuantity);
+        string CalcCompoundInterest(CompoundCalc calc, double fee);
+
+        Task<double> GetFeeFromApiAsync();
     }
 }

@@ -1,4 +1,5 @@
-﻿using CompoundCalcApi.Services.Interfaces;
+﻿using CompoundCalcApi.Domain.Entities;
+using CompoundCalcApi.Services.Interfaces;
 
 namespace CompoundCalcApi.Services.Implementations
 {
@@ -11,32 +12,33 @@ namespace CompoundCalcApi.Services.Implementations
             _configuration = configuration;
         }
 
-        public async Task<string> CalcCompoundInterestAsync(double initialValue, int monthsQuantity)
+        public string CalcCompoundInterest(CompoundCalc calc, double fee)
         {
-            var fee = await GetFeeFromApiAsync();
-            var mensalCompound = 1 + fee;
-
-            for (int i = 0; i < monthsQuantity; i++)
-                initialValue *= mensalCompound;
-
-            return Math.Round(initialValue, 2, MidpointRounding.ToZero).ToString("F");
+            return Math.Round(calc.Calculate(fee), 2, MidpointRounding.ToZero).ToString("F");
         }
 
-        private async Task<double> GetFeeFromApiAsync()
+        public async Task<double> GetFeeFromApiAsync()
         {
-            var feeApiUrl = _configuration["FeeApiUrl"];
-            if (string.IsNullOrEmpty(feeApiUrl)) throw new ArgumentException("Fee Api URL was required.");
-
-            using var client = new HttpClient();
-            var response = await client.SendAsync(new HttpRequestMessage
+            try
             {
-                RequestUri = new Uri(feeApiUrl)
-            });
+                var feeApiUrl = _configuration["FeeApiUrl"];
+                if (string.IsNullOrEmpty(feeApiUrl)) throw new ArgumentException("Fee Api URL was required.");
 
-            if (response == null || !response.IsSuccessStatusCode || !double.TryParse(await response.Content.ReadAsStringAsync(), out double fee))
-                throw new ArgumentException("Fail to recover fee value");
+                using var client = new HttpClient();
+                var response = await client.SendAsync(new HttpRequestMessage
+                {
+                    RequestUri = new Uri(feeApiUrl)
+                });
 
-            return fee;
+                if (response == null || !response.IsSuccessStatusCode || !double.TryParse(await response.Content.ReadAsStringAsync(), out double fee))
+                    throw new ArgumentException("Fail to recover fee value");
+
+                return fee;
+            }
+            catch (Exception)
+            {
+                return 0.01F; // default fee value
+            }
         }
     }
 }

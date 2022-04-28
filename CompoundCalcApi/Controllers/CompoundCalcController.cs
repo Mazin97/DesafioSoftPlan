@@ -1,3 +1,4 @@
+using CompoundCalcApi.Domain.Entities;
 using CompoundCalcApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +19,11 @@ namespace CompoundCalcApi.Controllers
 
         [Route("/CalculaJuros")]
         [HttpGet]
-        public async Task<IActionResult> Get(double initialValue, int monthsQuantity)
+        public async Task<IActionResult> Get(double initialValue, int months)
         {
             try
             {
-                return Ok(await _feeService.CalcCompoundInterestAsync(initialValue, monthsQuantity));
+                return Ok(_feeService.CalcCompoundInterest(new CompoundCalc(initialValue, months), await _feeService.GetFeeFromApiAsync()));
             }
             catch (Exception ex)
             {
