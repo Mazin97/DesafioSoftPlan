@@ -2,6 +2,9 @@
 
 <p>O desafio aqui foi desenvolver uma aplicação com duas APIs onde as mesmas deveriam comunicar-se entre si.</p>
 
+<h3>Como executar:</h3>
+<p>Contendo todos os componentes necessários (.NET 6) & Docker, basta executar o comando padrão de execução do docker <code>docker run</code></p>
+
 <h3>Tecnologias Utilizadas:</h3>
 <ul>
   <li>.NET Core 6</li>
