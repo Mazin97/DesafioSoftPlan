@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Net.Http.Headers;
-using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CompoundCalcApi.Controllers
 {
@@ -18,22 +14,10 @@ namespace CompoundCalcApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             try
             {
-                using var client = new HttpClient();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var request = new HttpRequestMessage
-                {
-                    RequestUri = new Uri("https://api.github.com/users/mazin97/repos")
-                };
-
-                var response = await client.SendAsync(request);
-
-                var responseObject = JsonConvert.DeserializeObject<object>(await response.Content.ReadAsStringAsync());
-
                 return Ok("https://github.com/Mazin97/DesafioSoftPlan");
             }
             catch (Exception ex)
